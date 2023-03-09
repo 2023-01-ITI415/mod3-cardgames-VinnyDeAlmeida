@@ -245,4 +245,24 @@ public class Card : MonoBehaviour
     {
         print(name); // When clciked, this outputs the card name
     }
+
+    /// <summary>
+    /// Return true if the two cards are adjacent in rank.
+    /// If wrap is true, Ace and King are adjacent.
+    /// </summary>
+    public bool AdjacentTo(Card otherCard, bool wrap=true)
+    {
+        if (!faceUp || !otherCard.faceUp) return (false);
+
+        // If the ranks are 1 apart, they are adjacent
+        if (Mathf.Abs(rank - otherCard.rank) == 1) return (true);
+        if (wrap) {
+            // If wrap == true, Ace and Kind are treated as adjacent
+            // If one card is Ace and the other King, they are adjacent
+            if (rank == 1 && otherCard.rank == 13) return (true);
+            if (rank == 13 && otherCard.rank == 1) return (true);
+        }
+
+        return (false); // Otherwise, return false
+    }
 }
