@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7033163853810950366}
   - component: {fileID: 8734732036240268095}
-  - component: {fileID: 1437921789221013135}
   - component: {fileID: 888683258997441697}
+  - component: {fileID: -3256086052064073121}
   m_Layer: 0
   m_Name: PrefabCard
   m_TagString: Untagged
@@ -86,18 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1437921789221013135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8026229037601239656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc6213e29b649d947ba25ef1efd7315c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &888683258997441697
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -124,3 +112,36 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.56, y: 3.56}
   m_EdgeRadius: 0
+--- !u!114 &-3256086052064073121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8026229037601239656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92edba6d350f6b542905901b583084b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  suit: 0
+  rank: 0
+  color: {r: 0, g: 0, b: 0, a: 1}
+  cols: Black
+  back: {fileID: 0}
+  def:
+    rank: 0
+    face: 
+    pips: []
+  decoGOs: []
+  pipGOs: []
+  state: 0
+  hiddenBy: []
+  layoutID: 0
+  layoutSlot:
+    id: 0
+    x: 0
+    y: 0
+    faceUp: 0
+    layer: 
+    hiddenByString: 
