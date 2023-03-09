@@ -84,7 +84,7 @@ public class Deck : MonoBehaviour
         GameObject go = Instantiate<GameObject>(prefabCard, deckAnchor);
         Card card = go.GetComponent<Card>();
 
-        // card.Init*suit, rank, startFaceUp);
+        card.Init(suit, rank, startFaceUp);
 
         return card;
     }
