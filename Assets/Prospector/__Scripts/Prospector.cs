@@ -12,7 +12,11 @@ public class Prospector : MonoBehaviour
 
     [Header("Dynamic")]
     public List<CardProspector> drawPile;
+    public List<CardProspector> discardPile;
+    public List<CardProspector> mine;
+    public CardProspector target;
 
+    private Transform layoutAnchor;
     private Deck deck;
     private JsonLayout jsonLayout;
 
@@ -29,6 +33,13 @@ public class Prospector : MonoBehaviour
         deck.InitDeck();
         Deck.Shuffle(ref deck.cards);
         drawPile = ConvertCardsToCardProspectors(deck.cards);
+
+        LayoutMine(); // Please don't forget this line
+
+        // Set up the initial target card
+        MoveToTarget(Draw());
+        // Set up the draw pile
+        UpdateDrawPile();
     }
 
     /// <summary>
@@ -46,6 +57,138 @@ public class Prospector : MonoBehaviour
 
             listCP.Add(cp);
         }
-        return (listCP);
+        return(listCP);
+    }
+
+    CardProspector Draw()
+    {
+        CardProspector cp = drawPile[0]; // Pull the 0th Card Prospector
+        drawPile.RemoveAt(0); // Then remove it from drawPile
+        return(cp); // And return it
+    }
+
+    void LayoutMine()
+    {
+        // Create an empty GameObject to serve as an anchor for the tableau
+        if(layoutAnchor == null)
+        {
+            //Create an empty GameObject named _LayoutAnchor in the Hierarchy
+            GameObject tGO = new GameObject("_LayoutAnchor");
+            layoutAnchor = tGO.transform; // Grab its Transform
+        }
+
+        CardProspector cp;
+
+        // Iterate through the JsonLayoutsSlots pulle form the JSON_Layout
+        foreach(JsonLayoutSlot slot in jsonLayout.slots)
+        {
+            cp = Draw(); // Pull a card from the top of the draw Pile
+            cp.faceUp = slot.faceUp; // Set its faceUp to the value in SlotDef
+            // Make the CardProspector a child of layoutAnchor
+            cp.transform.SetParent(layoutAnchor);
+
+            //Convert the last char of the layer string to an int (e.g. "Row 0")
+            int z = int.Parse(slot.layer[slot.layer.Length - 1].ToString());
+
+            // Set the localPosition of the card base on the slot information
+            cp.SetLocalPos(new Vector3(jsonLayout.multiplier.x * slot.x, jsonLayout.multiplier.y * slot.y, -z));
+
+            cp.layoutID = slot.id;
+            cp.layoutSlot = slot;
+            cp.state = eCardState.mine;
+
+            cp.SetSpriteSortingLayer(slot.layer);
+            mine.Add(cp); // Add this CardProspector to the List<> mine
+        }
+    }
+
+    void MoveToDiscard(CardProspector cp)
+    {
+        // Set the state of the card to discard
+        cp.state = eCardState.discard;
+        discardPile.Add(cp); // Add it to the discardPile List<>
+        cp.transform.SetParent(layoutAnchor); // Update its transform parent
+
+        // Position it on the discardPile
+        cp.SetLocalPos(new Vector3(jsonLayout.multiplier.x * jsonLayout.discardPile.x, jsonLayout.multiplier.y * jsonLayout.discardPile.y, 0));
+
+        cp.faceUp = true;
+
+        // Place it on top of the pile for dpeth sorting
+        cp.SetSpriteSortingLayer(jsonLayout.discardPile.layer);
+        cp.SetSortingOrder(-200 + (discardPile.Count * 3));
+    }
+
+    /// <summary>
+    /// Make cp the new target card
+    /// </summary>
+    
+    void MoveToTarget(CardProspector cp)
+    {
+        // If there is currently a target card, move it to discardPile
+        if (target != null) MoveToDiscard(target);
+
+        // Use MoveToDiscard to move the target card to the correct location
+        MoveToDiscard(cp);
+
+        // Then set a few additional things to make cp the new target
+        target = cp; // cp is the new target
+        cp.state = eCardState.target;
+
+        // Set the depth sorting so that cp is on top of the discardPile
+        cp.SetSpriteSortingLayer("Target");
+        cp.SetSortingOrder(0);
+    }
+
+    /// <summary>
+    /// Arranges all the cards of the drawPile to show how many are left
+    /// </summary>
+    void UpdateDrawPile()
+    {
+        CardProspector cp;
+        // Go through all the cards of the drawPile
+        for (int i = 0; i < drawPile.Count; i++)
+        {
+            cp = drawPile[i];
+            cp.transform.SetParent(layoutAnchor);
+
+            // Position it correctly with the layout.drawPile.stagger
+            Vector3 cpPos = new Vector3();
+            cpPos.x = jsonLayout.multiplier.x * jsonLayout.drawPile.x;
+            // Add the staggering for the drawPile
+            cpPos.x += jsonLayout.drawPile.xStagger * i;
+            cpPos.y = jsonLayout.multiplier.y * jsonLayout.drawPile.y;
+            cpPos.z = 0.1f * i;
+            cp.SetLocalPos(cpPos);
+
+            cp.faceUp = false; // DrawPile Cards are all face-down
+            cp.state = eCardState.drawpile;
+            // Set depth sorting
+
+            cp.SetSpriteSortingLayer(jsonLayout.drawPile.layer);
+            cp.SetSortingOrder(-10 * i);
+        }
+    }
+
+    /// <summary>
+    /// Handler for any time a card in the game is clicked
+    /// </summary>
+    static public void CARD_CLICKED(CardProspector cp)
+    {
+        // The reaction is determined by the state of the clicked card
+        switch (cp.state)
+        {
+            case eCardState.target:
+                // Clicking the target card does nothing
+                break;
+            case eCardState.drawpile:
+                // Clicking *any* card in the drawPile will draw the next card
+                S.MoveToTarget(S.Draw()); // Draw a new target card
+                S.UpdateDrawPile(); // Restack the drawPile
+                break;
+            case eCardState.mine:
+                // More to come here
+                break;
+        }
     }
 }

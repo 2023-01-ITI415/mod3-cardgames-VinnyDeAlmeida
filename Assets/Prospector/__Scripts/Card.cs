@@ -184,4 +184,65 @@ public class Card : MonoBehaviour
         _tGO.name = "back";
         back = _tGO;
     }
+
+    private SpriteRenderer[] spriteRenderers;
+
+    /// <summary>
+    /// Gather all SpriteRenderer on this and its children into an array.
+    /// </summary>
+    void PopulateSpriteRenderers()
+    {
+        // If we've already popuulate spriteRenderers, just return.
+        if (spriteRenderers != null) return;
+        // GetComponentsInChildren is slow, but we're only doing it once per card
+        spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
+    }
+
+    /// <summary>
+    /// Moves the Sprites of this Card into a specified sorting layer
+    /// </summary>
+    
+    public void SetSpriteSortingLayer(string layerName)
+    {
+        PopulateSpriteRenderers();
+
+        foreach(SpriteRenderer srend in spriteRenderers)
+        {
+            srend.sortingLayerName = layerName;
+        }
+    }
+
+    /// <summary>
+    /// Sets the sortingOrder of the Sprites on this Card.
+    /// This allows multiple Cards to be in the same sorting layer and still
+    /// overlap properly, and it is used by both the draw and discard piles.
+    /// </summary>
+    
+    public void SetSortingOrder(int sOrd)
+    {
+        PopulateSpriteRenderers();
+        
+        foreach(SpriteRenderer srend in spriteRenderers)
+        {
+            if (srend.gameObject == this.gameObject)
+            {
+                // If the gameObject is this.gameObject, it's the face card
+                srend.sortingOrder = sOrd; // Set its order to sOrd
+            }
+            else if (srend.gameObject.name == "back")
+            {
+                // If it's the back, set it to the highest
+            } else
+            {
+                // If it's anything else, put it in between.
+                srend.sortingOrder = sOrd + 1;
+            }
+        }
+    }
+
+    // Virtual methods canbe overridden by subclass methods with the same name
+    virtual public void OnMouseUpAsButton()
+    {
+        print(name); // When clciked, this outputs the card name
+    }
 }

@@ -16,4 +16,16 @@ public class CardProspector : Card
     public int layoutID;
     // The JsonLayoutSlot class stores information pulled in from JSON_Layout
     public JsonLayoutSlot layoutSlot;
+
+    /// <summary>
+    /// Informs the Prospector class that this card has been clicked
+    /// </summary>
+    
+    override public void OnMouseUpAsButton()
+    {
+        // Uncomment the next line to call the base class version of this method
+        // base.OnMouseUpAsButton();
+
+        Prospector.CARD_CLICKED(this);
+    }
 }
