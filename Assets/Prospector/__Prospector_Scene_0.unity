@@ -627,6 +627,7 @@ GameObject:
   - component: {fileID: 827460516}
   - component: {fileID: 827460517}
   - component: {fileID: 827460518}
+  - component: {fileID: 827460519}
   m_Layer: 0
   m_Name: _MainCamera
   m_TagString: MainCamera
@@ -811,6 +812,22 @@ MonoBehaviour:
   scoreRun: 0
   score: 0
   checkToResetHighScore: 0
+--- !u!114 &827460519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 827460508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fec0b0e2a4af054fba529ebe0ad8cbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameOverText: {fileID: 710881809}
+  roundResultText: {fileID: 1233405612}
+  highScoreText: {fileID: 1754120765}
+  _resultsUIFieldsVisible: 0
 --- !u!1 &1233405610
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,6 +17,7 @@ public class Prospector : MonoBehaviour
     public List<CardProspector> drawPile;
     public List<CardProspector> discardPile;
     public List<CardProspector> mine;
+    public List<CardProspector> potentialSpecialCards;
     public CardProspector target;
 
     private Transform layoutAnchor;
@@ -65,6 +66,8 @@ public class Prospector : MonoBehaviour
         }
         return(listCP);
     }
+
+    public List<float> silverCardChances;
 
     CardProspector Draw()
     {
@@ -251,6 +254,8 @@ public class Prospector : MonoBehaviour
         Invoke("ReloadLevel", roundDelay);
         // Note that there are TWO underscores at the beginning of "__Prospector...
         // SceneManager.LoadScene("__Prospector_Scene_0");
+
+        UITextManager.GAME_OVER_UI(won);
     }
 
     void ReloadLevel()
