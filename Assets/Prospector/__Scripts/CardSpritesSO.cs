@@ -7,8 +7,10 @@ public class CardSpritesSO : ScriptableObject
 {
     [Header("Card Stock")]
     public Sprite cardBack;
+    public Sprite cardBackSilver;
     public Sprite cardBackGold;
     public Sprite cardFront;
+    public Sprite cardFrontSilver;
     public Sprite cardFrontGold;
 
     [Header("Suits")]

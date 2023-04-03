@@ -18,11 +18,14 @@ public class Prospector : MonoBehaviour
     public List<CardProspector> discardPile;
     public List<CardProspector> mine;
     public List<CardProspector> potentialSpecialCards;
+    public float[] silverCardChances = { 1, 1, 0.5f, 0.25f, 0.125f };
     public CardProspector target;
 
     private Transform layoutAnchor;
     private Deck deck;
     private JsonLayout jsonLayout;
+
+    System.Random rand = new System.Random();
 
     // A Dictionary to pair mine layout IDs and actual Cards
     private Dictionary<int, CardProspector> mineIdToCardDict;
@@ -42,6 +45,7 @@ public class Prospector : MonoBehaviour
         drawPile = ConvertCardsToCardProspectors(deck.cards);
 
         LayoutMine(); // Please don't forget this line
+        ConvertToSilver();
 
         // Set up the initial target card
         MoveToTarget(Draw());
@@ -66,8 +70,6 @@ public class Prospector : MonoBehaviour
         }
         return(listCP);
     }
-
-    public List<float> silverCardChances;
 
     CardProspector Draw()
     {
@@ -114,6 +116,25 @@ public class Prospector : MonoBehaviour
 
             // Add this CardProspector to the mineIdtoCardDict Dictionary
             mineIdToCardDict.Add(slot.id, cp);
+
+            potentialSpecialCards.Add(cp);
+        }
+    }
+
+    void ConvertToSilver()
+    {
+       foreach (float chance in silverCardChances)
+        {
+            if (Random.value <= chance)
+            {
+                Debug.Log("Making Silver for Game" + chance);
+                CardProspector tcp;
+                int loc = rand.Next(potentialSpecialCards.Count);
+                tcp = potentialSpecialCards[loc];
+                potentialSpecialCards.RemoveAt(loc);
+                Debug.Log(tcp.name);
+                // tcp GetComponent<SpriteRenderer>
+            }
         }
     }
 
@@ -298,4 +319,6 @@ public class Prospector : MonoBehaviour
 
         S.CheckForGameOver(); // This is now the last line of CARD_CLICKED()
     }
+
+
 }
