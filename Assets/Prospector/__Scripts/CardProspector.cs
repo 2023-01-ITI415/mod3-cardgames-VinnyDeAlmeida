@@ -4,12 +4,14 @@ using UnityEngine;
 
 // This enum defines the ariable type eCardState with four named values.
 public enum eCardState { drawpile, mine, target, discard }
+public enum eCardType {normal, silver, gold}
 
 public class CardProspector : Card
 {
     // Made CarProspector extencd Card
     [Header("Dynamic: CardProspector")]
     public eCardState state = eCardState.drawpile;
+    public eCardType cardType = eCardType.normal;
     // The hiddenBy list stores which other cards will keep this one face down
     public List<CardProspector> hiddenBy = new List<CardProspector>();
     // The layoutID matches this card to the tableau JSON if it's a tableau card

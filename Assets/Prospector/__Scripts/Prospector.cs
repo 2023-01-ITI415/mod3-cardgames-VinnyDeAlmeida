@@ -19,6 +19,7 @@ public class Prospector : MonoBehaviour
     public List<CardProspector> mine;
     public List<CardProspector> potentialSpecialCards;
     public float[] silverCardChances = { 1, 1, 0.5f, 0.25f, 0.125f };
+    public float[] goldCardChances = { 1, 1, 0.5f, 0.25f, 0.125f };
     public CardProspector target;
 
     private Transform layoutAnchor;
@@ -33,7 +34,7 @@ public class Prospector : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (S != null) Debug.LogError("Attermpe to set S more than once!");
+        if (S != null) Debug.LogError("Attempted to set S more than once!");
         S = this;
 
         jsonLayout = GetComponent<JsonParseLayout>().layout;
@@ -46,6 +47,7 @@ public class Prospector : MonoBehaviour
 
         LayoutMine(); // Please don't forget this line
         ConvertToSilver();
+        ConvertToGold();
 
         // Set up the initial target card
         MoveToTarget(Draw());
@@ -132,8 +134,35 @@ public class Prospector : MonoBehaviour
                 int loc = rand.Next(potentialSpecialCards.Count);
                 tcp = potentialSpecialCards[loc];
                 potentialSpecialCards.RemoveAt(loc);
+                tcp.cardType = eCardType.silver;
                 Debug.Log(tcp.name);
-                // tcp GetComponent<SpriteRenderer>
+                SpriteRenderer tsr = tcp.GetComponent<SpriteRenderer>();
+                tsr.sprite = CardSpritesSO.GET_SILVER_FRONT;
+                GameObject tgo = tcp.transform.Find("back").gameObject;
+                tsr = tgo.GetComponent<SpriteRenderer>();
+                tsr.sprite = CardSpritesSO.GET_SILVER_BACK;
+            }
+        }
+    }
+
+    void ConvertToGold()
+    {
+        foreach (float chance in goldCardChances)
+        {
+            if (Random.value <= chance)
+            {
+                Debug.Log("Making Gold for Game" + chance);
+                CardProspector tcp;
+                int loc = rand.Next(potentialSpecialCards.Count);
+                tcp = potentialSpecialCards[loc];
+                potentialSpecialCards.RemoveAt(loc);
+                tcp.cardType = eCardType.gold;
+                Debug.Log(tcp.name);
+                SpriteRenderer tsr = tcp.GetComponent<SpriteRenderer>();
+                tsr.sprite = CardSpritesSO.GET_GOLD_FRONT;
+                GameObject tgo = tcp.transform.Find("back").gameObject;
+                tsr = tgo.GetComponent<SpriteRenderer>();
+                tsr.sprite = CardSpritesSO.GET_GOLD_BACK;
             }
         }
     }

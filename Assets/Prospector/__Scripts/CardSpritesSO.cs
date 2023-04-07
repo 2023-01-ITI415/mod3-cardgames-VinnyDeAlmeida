@@ -84,6 +84,26 @@ public class CardSpritesSO : ScriptableObject
         get { return S.cardBack; }
     }
     
+    public static Sprite GET_SILVER_BACK
+    {
+        get { return S.cardBackSilver; }
+    }
+
+    public static Sprite GET_SILVER_FRONT
+    {
+        get { return S.cardFrontSilver; }
+    }
+
+    public static Sprite GET_GOLD_BACK
+    {
+        get { return S.cardBackGold; }
+    }
+
+    public static Sprite GET_GOLD_FRONT
+    {
+        get { return S.cardFrontGold; }
+    }
+
     public static void RESET()
     {
         S = null;
