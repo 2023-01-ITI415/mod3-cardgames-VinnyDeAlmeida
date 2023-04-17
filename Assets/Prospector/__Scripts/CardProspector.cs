@@ -28,6 +28,7 @@ public class CardProspector : Card
         // Uncomment the next line to call the base class version of this method
         // base.OnMouseUpAsButton();
 
-        Prospector.CARD_CLICKED(this);
+        // Prospector.CARD_CLICKED(this);
+        Pyramid.CARD_CLICKED(this);
     }
 }

@@ -179,7 +179,7 @@ public class Prospector : MonoBehaviour
 
         cp.faceUp = true;
 
-        // Place it on top of the pile for dpeth sorting
+        // Place it on top of the pile for depth sorting
         cp.SetSpriteSortingLayer(jsonLayout.discardPile.layer);
         cp.SetSortingOrder(-200 + (discardPile.Count * 3));
     }

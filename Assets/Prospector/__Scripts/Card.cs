@@ -192,7 +192,7 @@ public class Card : MonoBehaviour
     /// </summary>
     void PopulateSpriteRenderers()
     {
-        // If we've already popuulate spriteRenderers, just return.
+        // If we've already populate spriteRenderers, just return.
         if (spriteRenderers != null) return;
         // GetComponentsInChildren is slow, but we're only doing it once per card
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
@@ -262,6 +262,14 @@ public class Card : MonoBehaviour
             if (rank == 1 && otherCard.rank == 13) return (true);
             if (rank == 13 && otherCard.rank == 1) return (true);
         }
+
+        return (false); // Otherwise, return false
+    }
+    
+    public bool AddToThirteen(Card otherCard, bool wrap = true)
+    {
+        if (!faceUp || !otherCard.faceUp) return (false);
+        if (rank + otherCard.rank == 13 || rank == 13) return (true);
 
         return (false); // Otherwise, return false
     }
