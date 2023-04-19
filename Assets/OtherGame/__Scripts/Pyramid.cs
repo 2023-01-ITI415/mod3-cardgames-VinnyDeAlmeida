@@ -317,6 +317,8 @@ public class Pyramid : MonoBehaviour
 
     static public void CARD_CLICKED(CardProspector cp)
     {
+        // What I wanted to implement here was a way for the game to know when the player has clicked on the first card and then the second card.
+        
         // The reaction is determined by the state of the clicked card
         switch (cp.state)
         {
@@ -338,7 +340,8 @@ public class Pyramid : MonoBehaviour
 
                 if (validMatch)
                 {
-                    // If it's a valid card
+                    // Here I wanted to implement a way to make it so if the two cards add up to thirteen, the player earns points and then both cards are moved to the discard pile
+
                     S.mine.Remove(cp); // Remove it from the tableau List
                     S.MoveToTarget(cp); // Make it the target card
                     S.SetMineFaceUps(); // Be sure to add this line!

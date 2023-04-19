@@ -268,7 +268,11 @@ public class Card : MonoBehaviour
     
     public bool AddToThirteen(Card otherCard, bool wrap = true)
     {
+        // I wanted to implement a way to check if the card is in the correct list.
+
         if (!faceUp || !otherCard.faceUp) return (false);
+        
+        // This is to check if both cards add up to thirteen or if the card selected is a King
         if (rank + otherCard.rank == 13 || rank == 13) return (true);
 
         return (false); // Otherwise, return false
